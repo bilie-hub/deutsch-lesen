@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Meine Bibliothek</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=EB+Garamond:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0d0d; --bg2: #191414; --ink: #ece4d8; --muted: #9a8f83; --line: rgba(255, 255, 255, .08);
+  --accent: #d4664a; --card: #1a1617;
+  --display: "Cormorant Garamond", "EB Garamond", Georgia, serif; --ui: Inter, system-ui, "Segoe UI", sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body {
+  background: radial-gradient(ellipse 90% 60% at 50% -10%, #3a1712 0%, transparent 60%), radial-gradient(ellipse at 50% 120%, var(--bg2), var(--bg));
+  background-attachment: fixed; color: var(--ink); font-family: var(--ui); -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 1060px; margin: 0 auto; padding: 56px 24px 64px; }
+header { text-align: center; margin-bottom: 44px; animation: rise .7s ease-out both; }
+header .eyebrow { font: 600 11px var(--ui); letter-spacing: .32em; text-transform: uppercase; color: var(--accent); }
+header h1 { font: 600 clamp(40px, 7vw, 64px)/1 var(--display); margin: 12px 0 10px; letter-spacing: .01em; }
+header p { color: var(--muted); font: italic 19px/1.5 "EB Garamond", serif; margin: 0 auto; max-width: 520px; }
+.train {
+  display: inline-flex; align-items: center; gap: 10px; margin-top: 22px; height: 46px; padding: 0 22px; border-radius: 99px; text-decoration: none;
+  color: #fff; background: var(--accent); font: 600 14px var(--ui); box-shadow: 0 10px 30px -10px rgba(212, 102, 74, .6); transition: transform .2s, filter .2s;
+}
+.train:hover { transform: translateY(-2px); filter: brightness(1.08); }
+.train span { background: rgba(0, 0, 0, .25); border-radius: 99px; padding: 2px 9px; font-size: 12px; }
+.train span:empty { display: none; }
+.train.ghost { background: transparent; border: 1px solid rgba(255, 255, 255, .18); box-shadow: none; margin-left: 8px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 22px; }
+.card {
+  position: relative; display: flex; flex-direction: column; text-decoration: none; color: inherit; border-radius: 18px; overflow: hidden;
+  background: var(--card); border: 1px solid var(--line); box-shadow: 0 20px 50px -20px rgba(0, 0, 0, .8);
+  transition: transform .35s cubic-bezier(.2, .8, .2, 1), box-shadow .35s, border-color .35s; animation: rise .7s ease-out both;
+}
+.card:nth-child(2) { animation-delay: .08s; } .card:nth-child(3) { animation-delay: .16s; }
+.card:hover { transform: translateY(-6px); box-shadow: 0 34px 70px -24px rgba(0, 0, 0, .95); border-color: rgba(212, 102, 74, .35); }
+.cover { position: relative; height: 230px; padding: 22px; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; }
+.cover::before { content: ""; position: absolute; inset: 0; background: var(--art); transition: transform .8s cubic-bezier(.2, .8, .2, 1); }
+.card:hover .cover::before { transform: scale(1.06); }
+.cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 30%, rgba(0, 0, 0, .7)); }
+.cover > * { position: relative; z-index: 1; }
+.glyph { position: absolute !important; right: 18px; top: 10px; font: 600 120px/1 var(--display); opacity: .16; z-index: 1; }
+.author { font: 600 11px var(--ui); letter-spacing: .24em; text-transform: uppercase; color: rgba(255, 255, 255, .7); }
+.cover h2 { font: 600 34px/1.02 var(--display); margin: 6px 0 0; color: #fff; }
+.body { padding: 18px 22px 22px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+.tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag { font: 600 10.5px var(--ui); letter-spacing: .08em; text-transform: uppercase; padding: 4px 9px; border-radius: 99px; background: rgba(255, 255, 255, .06); color: var(--muted); }
+.tag.lv { color: #fff; background: var(--lvc); }
+.hook { font: 18px/1.45 "EB Garamond", serif; margin: 0; }
+.hook i { display: block; color: var(--muted); font-size: 15px; margin-top: 4px; }
+.foot { margin-top: auto; display: flex; align-items: center; gap: 12px; }
+.bar { flex: 1; height: 4px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--accent); width: 0; transition: width 1s .3s ease-out; }
+.go { font: 600 13px var(--ui); color: var(--accent); white-space: nowrap; }
+.card.hard { opacity: .82; }
+.card.hard:hover { opacity: 1; }
+.tip { margin: 40px auto 0; max-width: 640px; text-align: center; color: var(--muted); font-size: 13.5px; line-height: 1.6; animation: rise .7s .3s ease-out both; }
+.tip b { color: var(--ink); font-weight: 500; }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Deutsch lesen · Schauergeschichten</div>
+    <h1>Meine Bibliothek</h1>
+    <p>Dunkle Geschichten. Tippe auf jedes Wort, das du nicht kennst.</p>
+    <a class="train" href="trainer.html">Vokabeltrainer <span id="due"></span></a>
+    <a class="train ghost" href="grammar.html">Grammatik-Spickzettel</a>
+  </header>
+  <div class="grid" id="grid"></div>
+  <p class="tip" style="font-size:11.5px;opacity:.75;margin-top:24px">Quellen: Texte von Project Gutenberg (gemeinfrei) · Englische Übersetzung: David Wyllie (Project Gutenberg) · Wörterbuch: Wiktionary über kaikki.org, Lizenz <a href="https://creativecommons.org/licenses/by-sa/4.0/" style="color:inherit">CC BY-SA 4.0</a> · Satzübersetzung: MyMemory · „Leicht erzählt“ ist eine KI-Nacherzählung.</p>
+  <p class="tip">Tipp: Fang mit <b>Die Verwandlung – leicht erzählt</b> an. Lies ein Kapitel in der leichten Version, dann dasselbe Kapitel im Original. Lies jeden Tag nur ein paar Seiten – und schlag nicht jedes Wort nach.</p>
+</div>
+<script>
+const BOOKS = [{"id":"verwandlung-b1","title":"Die Verwandlung – leicht erzählt","author":"nach Franz Kafka","year":1915,"start":1,"level":"B1 · Hier anfangen","lvc":"#2f7d5b","glyph":"✦","art":"radial-gradient(circle at 40% 30%, #2f5d4a, #142a20 55%, #08110d)","hook":"Dieselbe Geschichte in einfachem Deutsch. Daneben, Absatz für Absatz: Kafkas Original und die englische Übersetzung.","en":"The same story in simple German (an AI retelling), with Kafka’s original paragraph right next to each one.","words":9393,"minutes":105},{"id":"verwandlung","title":"Die Verwandlung","author":"Franz Kafka","year":1915,"start":1,"level":"B2–C1 · das Original","lvc":"#4d6b2f","glyph":"❦","art":"radial-gradient(circle at 70% 30%, #6b4a1f, #2a1a0c 55%, #120c08)","hook":"Gregor Samsa wacht eines Morgens auf – als riesiges Ungeziefer. Und seine Familie wendet sich langsam gegen ihn.","en":"A man wakes up as a giant insect. Creepy, sad, impossible to stop reading.","words":19151,"minutes":215},{"id":"strafkolonie","title":"In der Strafkolonie","author":"Franz Kafka","year":1919,"start":1,"level":"C1","lvc":"#8a5a1f","glyph":"⚙","art":"radial-gradient(circle at 30% 30%, #7a2a1a, #2b0f0b 60%, #0e0606)","hook":"Ein Offizier zeigt stolz seine Maschine: Sie schreibt dem Verurteilten das Urteil in die Haut.","en":"An officer proudly demonstrates an execution machine. Short and deeply disturbing.","words":10278,"minutes":115},{"id":"elixiere","title":"Die Elixiere des Teufels","author":"E. T. A. Hoffmann","year":1815,"start":3,"level":"C2 · sehr schwer","lvc":"#6b2d5c","hard":true,"glyph":"☩","art":"radial-gradient(circle at 60% 40%, #3d2a4a, #1a1020 55%, #0a070c)","hook":"Ein Mönch trinkt vom Elixier des Teufels – und verliert sich selbst.","en":"A monk drinks the devil’s elixir. Gothic classic in 200-year-old German — save it for later.","words":105546,"minutes":1175}];
+let get = k => { try { return JSON.parse(localStorage.getItem('elixiere:' + k)); } catch (e) { return null; } };
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+document.getElementById('grid').innerHTML = BOOKS.map(b => {
+  const p = get('progress:' + b.id) || 0;
+  const started = get(b.id === 'elixiere' ? 'pos' : 'pos:' + b.id);
+  return `<a class="card ${b.hard ? 'hard' : ''}" href="${b.id}.html" style="--art:${b.art};--lvc:${b.lvc}">
+    <div class="cover"><div class="glyph">${esc(b.glyph)}</div><div class="author">${esc(b.author)} · ${b.year}</div><h2>${esc(b.title)}</h2></div>
+    <div class="body">
+      <div class="tags"><span class="tag lv">${esc(b.level)}</span><span class="tag">≈ ${b.minutes >= 60 ? (b.minutes / 60).toFixed(1).replace('.0', '').replace('.', ',') + ' Std.' : b.minutes + ' Min.'}</span><span class="tag">${b.words.toLocaleString('de-DE')} Wörter</span></div>
+      <p class="hook">${esc(b.hook)}<i>${esc(b.en)}</i></p>
+      <div class="foot"><div class="bar"><i data-w="${p}"></i></div><span class="go">${started ? (p >= 99 ? 'Gelesen ✓' : `Weiterlesen · ${Math.round(p)} %`) : 'Beginnen →'}</span></div>
+    </div></a>`;
+}).join('');
+{
+  const vocab = get('vocab') || [], srs = get('srs') || {}, now = Date.now();
+  const due = vocab.filter(v => !srs[v.w] || srs[v.w].due <= now).length;
+  document.getElementById('due').textContent = due ? `${due} fällig` : '';
+}
+requestAnimationFrame(() => document.querySelectorAll('.bar i').forEach(i => i.style.width = i.dataset.w + '%'));
+</script>
+</body>
+</html>

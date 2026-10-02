@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Grammatik-Spickzettel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=EB+Garamond:ital,wght@0,400..700;1,400..700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --desk: #e7e0d3; --desk2: #d6ccba; --card: #fffdf8; --ink: #2a2520; --muted: #8a7f72; --line: rgba(42, 37, 32, .11);
+  --accent: #9b2c1f; --accent-soft: rgba(155, 44, 31, .09); --chip: #f2ebdd; --blue: #2f6fb3; --blue-soft: rgba(47, 111, 179, .1);
+  --display: "Cormorant Garamond", "EB Garamond", Georgia, serif; --serif: "EB Garamond", Georgia, serif; --ui: Inter, system-ui, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+[data-theme="sepia"] { --desk: #cdbb98; --desk2: #b9a47f; --card: #f9efda; --ink: #3a2c1c; --muted: #8c7556; --chip: #ecdcbd; }
+[data-theme="night"] { --desk: #121215; --desk2: #0b0b0d; --card: #1b1a1e; --ink: #e6dfd3; --muted: #8d867c; --line: rgba(255, 255, 255, .08); --accent: #e58b6b; --accent-soft: rgba(229, 139, 107, .13); --chip: #26242a; --blue: #8ab4f8; --blue-soft: rgba(138, 180, 248, .12); color-scheme: dark; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 20px; }
+body { margin: 0; background: radial-gradient(ellipse 120% 90% at 50% 20%, var(--desk), var(--desk2)) fixed; color: var(--ink); font-family: var(--ui); -webkit-font-smoothing: antialiased; }
+.top { display: flex; align-items: center; gap: 10px; padding: 14px 18px; max-width: 980px; margin: 0 auto; }
+.top a { display: inline-flex; align-items: center; gap: 6px; height: 38px; padding: 0 12px; border-radius: 10px; color: inherit; text-decoration: none; font-size: 13px; font-weight: 500; }
+.top a:hover { background: var(--accent-soft); }
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 18px 80px; }
+h1 { font: 600 44px/1.05 var(--display); margin: 8px 0 6px; color: var(--accent); }
+.intro { color: var(--muted); font-size: 15px; line-height: 1.6; margin: 0 0 22px; }
+nav.toc { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 26px; }
+nav.toc a { font-size: 12.5px; font-weight: 500; padding: 6px 11px; border-radius: 99px; background: var(--card); color: var(--ink); text-decoration: none; border: 1px solid var(--line); }
+nav.toc a:hover { border-color: var(--accent); color: var(--accent); }
+section { background: var(--card); border-radius: 18px; padding: 22px 24px; margin-bottom: 16px; box-shadow: 0 1px 2px rgba(0, 0, 0, .05); transition: box-shadow .4s; }
+section:target { box-shadow: 0 0 0 3px var(--accent); }
+section h2 { font: 600 28px/1.15 var(--display); margin: 0 0 2px; }
+section .de { font: 600 10.5px var(--ui); letter-spacing: .18em; text-transform: uppercase; color: var(--accent); }
+section p, section li { font-size: 15px; line-height: 1.65; }
+section ul { padding-left: 20px; margin: 8px 0; }
+.ex { font: 19px/1.6 var(--serif); background: var(--chip); border-radius: 12px; padding: 12px 16px; margin: 12px 0 4px; }
+.ex i { display: block; font-size: 15.5px; color: var(--muted); margin-top: 4px; }
+.v { color: var(--accent); font-weight: 700; }
+.v2 { color: var(--accent); border-bottom: 2px dotted var(--accent); }
+.c { color: var(--blue); font-weight: 600; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; margin: 10px 0; }
+th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); }
+th { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+td b { font-family: var(--serif); font-size: 16px; }
+.tip { font-size: 13.5px; color: var(--muted); border-left: 3px solid var(--accent); padding-left: 12px; margin-top: 12px; }
+</style>
+</head>
+<body>
+<div class="top"><a href="lesen.html">‹ Bibliothek</a><span style="flex:1"></span><a href="javascript:history.back()">Zurück zum Buch</a></div>
+<div class="wrap">
+  <h1>Grammatik-Spickzettel</h1>
+  <p class="intro">The rules you need to read stories in German, explained simply. Most examples are real sentences from <i>Die Verwandlung</i>. You don't have to learn all of them at once: the reader shows you which ones a sentence uses.</p>
+  <nav class="toc">
+    <a href="#verbzwei">Verb in position 2</a><a href="#verbende">Verb at the end</a><a href="#relativ">der/die/das = which</a>
+    <a href="#praeteritum">Präteritum</a><a href="#perfekt">Perfekt</a><a href="#partizip">Partizip</a><a href="#trennbar">Separable verbs</a>
+    <a href="#modal">Modal verbs</a><a href="#zuinf">zu + infinitive</a><a href="#kasus">Cases</a><a href="#adjektiv">Adjective endings</a>
+    <a href="#passiv">Passive</a><a href="#konjunktiv">Konjunktiv II</a>
+  </nav>
+
+  <section id="verbzwei"><div class="de">Verbzweitstellung</div><h2>The verb is in position 2</h2>
+    <p>In a normal sentence, the conjugated verb is always the <b>second element</b>. If something other than the subject comes first (a time, a place, a whole side clause…), the subject moves <b>behind</b> the verb.</p>
+    <div class="ex">Er <span class="v">lag</span> auf seinem Rücken.<i>He lay on his back. (subject first)</i></div>
+    <div class="ex">Dann <span class="v">lag</span> er auf seinem Rücken.<i>Then he lay on his back. (“Dann” first → er moves after the verb)</i></div>
+    <div class="ex"><span class="c">Als</span> Gregor eines Morgens <span class="v">erwachte</span>, <span class="v">fand</span> er sich verwandelt.<i>The whole side clause is “position 1”, so the main clause starts with the verb: fand er.</i></div>
+    <p class="tip">English does this only in questions. In German, whenever you see “verb + subject”, look at what came first.</p>
+  </section>
+
+  <section id="verbende"><div class="de">Nebensatz</div><h2>Side clauses: the verb goes to the end</h2>
+    <p>Words like <span class="c">als, wenn, dass (daß), weil, ob, obwohl, während, nachdem, bevor, bis, damit</span> start a <b>side clause</b>. Inside it, the conjugated verb waits until the very <b>end</b>. Tip: read to the end of the clause before you try to understand it.</p>
+    <table><tr><th>Word</th><th>Meaning</th></tr>
+      <tr><td><b>als</b></td><td>when (one moment in the past)</td></tr><tr><td><b>wenn</b></td><td>if / whenever</td></tr>
+      <tr><td><b>dass / daß</b></td><td>that</td></tr><tr><td><b>weil</b></td><td>because</td></tr><tr><td><b>ob</b></td><td>whether</td></tr>
+      <tr><td><b>obwohl</b></td><td>although</td></tr><tr><td><b>während</b></td><td>while</td></tr><tr><td><b>nachdem / bevor</b></td><td>after / before</td></tr></table>
+    <div class="ex">…, <span class="c">daß</span> es ein Traum <span class="v">war</span>.<i>…that it was a dream.</i></div>
+    <div class="ex"><span class="c">wenn</span> er den Kopf ein wenig <span class="v">hob</span><i>if/when he lifted his head a little</i></div>
+  </section>
+
+  <section id="relativ"><div class="de">Relativsatz</div><h2>der / die / das = “which, who, that”</h2>
+    <p>After a comma, <b>der, die, das, dem, den, dessen, deren</b> often don't mean “the” but <b>“which / who / that”</b>. They describe the word just before the comma, and the verb goes to the <b>end</b>.</p>
+    <div class="ex">…hing das Bild, <span class="c">das</span> er vor kurzem aus einer illustrierten Zeitschrift ausgeschnitten und in einem hübschen, vergoldeten Rahmen untergebracht <span class="v">hatte</span>.<i>…hung the picture that he had recently cut out of an illustrated magazine and put into a nice gilded frame.</i></div>
+    <p class="tip">How to tell: “the” is followed by a noun (das Bild). “which” is followed by other words and the clause ends with a verb.</p>
+  </section>
+
+  <section id="praeteritum"><div class="de">Präteritum</div><h2>The story past tense</h2>
+    <p>Books tell stories in the <b>Präteritum</b> (simple past). In speech, Germans mostly use the Perfekt instead, which is why these forms feel new. The most important ones are irregular, so learn them like vocabulary:</p>
+    <table><tr><th>Infinitive</th><th>Präteritum (er/sie/es)</th><th>Meaning</th></tr>
+      <tr><td><b>sein</b></td><td><b>war</b></td><td>was</td></tr><tr><td><b>haben</b></td><td><b>hatte</b></td><td>had</td></tr>
+      <tr><td><b>liegen</b></td><td><b>lag</b></td><td>lay</td></tr><tr><td><b>finden</b></td><td><b>fand</b></td><td>found</td></tr>
+      <tr><td><b>sehen</b></td><td><b>sah</b></td><td>saw</td></tr><tr><td><b>gehen</b></td><td><b>ging</b></td><td>went</td></tr>
+      <tr><td><b>kommen</b></td><td><b>kam</b></td><td>came</td></tr><tr><td><b>denken</b></td><td><b>dachte</b></td><td>thought</td></tr>
+      <tr><td><b>rufen</b></td><td><b>rief</b></td><td>called</td></tr><tr><td><b>schließen</b></td><td><b>schloß / schloss</b></td><td>closed</td></tr></table>
+    <p>Regular verbs just add <b>-te</b>: <i>erwachen → erwachte</i>, <i>versuchen → versuchte</i>.</p>
+    <div class="ex">»Was ist mit mir geschehen?« <span class="v">dachte</span> er. Es <span class="v">war</span> kein Traum.<i>“What has happened to me?” he thought. It was no dream.</i></div>
+  </section>
+
+  <section id="perfekt"><div class="de">Perfekt · Plusquamperfekt</div><h2>haben / sein + Partizip II</h2>
+    <p><b>Perfekt</b> = present of <i>haben/sein</i> + participle at the end: “has done / did”.<br><b>Plusquamperfekt</b> = <i>hatte/war</i> + participle: “<b>had</b> done”, for things that happened <b>before</b> the story's moment.</p>
+    <div class="ex">»Was <span class="v">ist</span> mit mir <span class="v2">geschehen</span>?«<i>“What has happened to me?” (Perfekt)</i></div>
+    <div class="ex">…das er vor kurzem aus einer illustrierten Zeitschrift <span class="v2">ausgeschnitten</span> und in einem hübschen, vergoldeten Rahmen <span class="v2">untergebracht</span> <span class="v">hatte</span>.<i>…which he had recently cut out of a magazine and put into a frame. (Plusquamperfekt)</i></div>
+  </section>
+
+  <section id="partizip"><div class="de">Partizip I · Partizip II</div><h2>Participles</h2>
+    <p><b>Partizip II</b> (ge…t / ge…en): <i>gemacht, gesehen, verwandelt</i>. It's used for the past (with haben/sein), for the passive (with werden), or as an adjective.<br>
+    <b>Partizip I</b> (infinitive + d): <i>zappelnd</i> = wriggling. Used like an adjective, so it gets endings.</p>
+    <div class="ex">…fand er sich zu einem Ungeziefer <span class="v2">verwandelt</span>.<i>…he found himself transformed into a vermin. (Partizip II as a description)</i></div>
+    <div class="ex">…um die <span class="v2">zappelnden</span> Beine nicht sehen zu müssen<i>…so as not to have to see the wriggling legs (Partizip I + ending)</i></div>
+  </section>
+
+  <section id="trennbar"><div class="de">Trennbare Verben</div><h2>Separable verbs: the front part jumps to the end</h2>
+    <p>Many verbs have a front part: <b>auf</b>stehen, <b>zurück</b>schaukeln, <b>an</b>sehen. In a main clause, that front part goes to the <b>end of the clause</b>. If a short word like <i>auf, an, aus, zurück, ein, mit, vor, weg</i> sits at the end of a clause, glue it back onto the verb before you look it up!</p>
+    <div class="ex">…immer wieder <span class="v">schaukelte</span> er in die Rückenlage <span class="v2">zurück</span>.<i>…again and again he rocked back onto his back. → zurück|schaukeln</i></div>
+    <div class="ex">Er <span class="v">stand</span> <span class="v2">auf</span>.<i>He got up. → auf|stehen</i></div>
+  </section>
+
+  <section id="modal"><div class="de">Modalverben</div><h2>können, müssen, wollen, sollen, dürfen, mögen</h2>
+    <p>A modal verb sits in position 2. The other verb goes to the <b>end</b> in its basic form (infinitive).</p>
+    <div class="ex">…<span class="v">konnte</span> sich aber in seinem gegenwärtigen Zustand nicht in diese Lage <span class="v2">bringen</span>.<i>…but in his present state he could not get himself into this position.</i></div>
+    <table><tr><th>Modal</th><th>Präteritum</th><th>Meaning</th></tr>
+      <tr><td><b>können</b></td><td>konnte</td><td>can / could</td></tr><tr><td><b>müssen</b></td><td>mußte / musste</td><td>must / had to</td></tr>
+      <tr><td><b>wollen</b></td><td>wollte</td><td>want / wanted</td></tr><tr><td><b>sollen</b></td><td>sollte</td><td>should / was supposed to</td></tr>
+      <tr><td><b>dürfen</b></td><td>durfte</td><td>may / was allowed</td></tr></table>
+  </section>
+
+  <section id="zuinf"><div class="de">zu + Infinitiv</div><h2>zu + infinitive = “to …”</h2>
+    <p><b>zu + verb</b> at the end of a clause = “to do”. With <b>um … zu</b> it means “<b>in order to</b>”, with <b>ohne … zu</b> “<b>without</b> …-ing”.</p>
+    <div class="ex">Er schloß die Augen, <span class="c">um</span> die zappelnden Beine nicht sehen <span class="c">zu</span> <span class="v2">müssen</span>.<i>He closed his eyes in order not to have to see the wriggling legs.</i></div>
+  </section>
+
+  <section id="kasus"><div class="de">Die vier Fälle</div><h2>Cases: why “der” keeps changing</h2>
+    <p>Articles change depending on the job of the noun in the sentence. This table is the key to half of German:</p>
+    <table><tr><th></th><th>masculine</th><th>feminine</th><th>neuter</th><th>plural</th></tr>
+      <tr><td><b>Nominativ</b> (subject)</td><td>der / ein</td><td>die / eine</td><td>das / ein</td><td>die</td></tr>
+      <tr><td><b>Akkusativ</b> (direct object)</td><td><b>den / einen</b></td><td>die / eine</td><td>das / ein</td><td>die</td></tr>
+      <tr><td><b>Dativ</b> (to/for, after mit, von, zu, aus, bei, nach…)</td><td><b>dem / einem</b></td><td><b>der / einer</b></td><td><b>dem / einem</b></td><td><b>den</b> (+ -n)</td></tr>
+      <tr><td><b>Genitiv</b> (“of”)</td><td><b>des / eines</b> (+ -s)</td><td><b>der / einer</b></td><td><b>des / eines</b> (+ -s)</td><td><b>der</b></td></tr></table>
+    <p>Same pattern for <i>mein, sein, ihr, kein</i>: <i>in <b>seinem</b> Bett</i> = in his bed (Dativ after <i>in</i>, saying where).</p>
+    <div class="ex"><b>eines</b> Morgens … aus unruhig<b>en</b> Träum<b>en</b><i>one morning (Genitiv of time) … from troubled dreams (Dativ plural after “aus”)</i></div>
+  </section>
+
+  <section id="adjektiv"><div class="de">Adjektivendungen</div><h2>Adjective endings</h2>
+    <p>An adjective before a noun gets an ending. The simple rule that covers most cases in books:</p>
+    <ul><li>After <b>der/die/das</b> (and dies-, jen-, welch-): usually <b>-e</b> or <b>-en</b>.</li>
+      <li>In the <b>Dativ</b>, <b>Genitiv</b> and <b>plural</b> after an article: almost always <b>-en</b>.</li>
+      <li>With <b>no article</b>, the adjective shows the case itself: <i>schwer<b>er</b> Rücken, lieb<b>es</b> Kind</i>.</li></ul>
+    <div class="ex">auf seinem panzerartig hart<b>en</b> Rücken<i>on his armour-like hard back (Dativ → -en)</i></div>
+    <p class="tip">For reading, endings rarely change the meaning. Ignore them at first, and look up the word without the ending.</p>
+  </section>
+
+  <section id="passiv"><div class="de">Passiv</div><h2>werden + Partizip II = something is done</h2>
+    <p>The <b>passive</b> uses <i>werden</i> (wird / wurde) + Partizip II at the end: the focus is on what happens, not who does it.</p>
+    <div class="ex">Die Tür <span class="v">wurde</span> noch mit dem Stock <span class="v2">zugeschlagen</span>.<i>The door was then slammed shut with the stick.</i></div>
+  </section>
+
+  <section id="konjunktiv"><div class="de">Konjunktiv II</div><h2>The “would / could” form</h2>
+    <p>Used for wishes, unreal situations and politeness. The forms look like the Präteritum, often with an umlaut: <i>war → <b>wäre</b>, hatte → <b>hätte</b>, konnte → <b>könnte</b>, vergaß → <b>vergäße</b></i>. Or simply <b>würde</b> + infinitive.</p>
+    <div class="ex">»Wie <span class="v">wäre</span> es, <span class="c">wenn</span> ich noch ein wenig <span class="v">weiterschliefe</span> und alle Narrheiten <span class="v">vergäße</span>,« dachte er.<i>“How would it be if I slept a little longer and forgot all this nonsense,” he thought.</i></div>
+  </section>
+</div>
+<script>
+try { const s = JSON.parse(localStorage.getItem('elixiere:settings')) || {}; if (s.theme) document.documentElement.dataset.theme = s.theme; } catch (e) {}
+</script>
+</body>
+</html>
