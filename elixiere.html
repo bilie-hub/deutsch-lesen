@@ -51,7 +51,7 @@ kbd {
 svg.i { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
 
 /* ---------- app frame ---------- */
-.app { display: grid; grid-template-rows: 56px minmax(0, 1fr) 52px; height: 100dvh; }
+.app { display: grid; grid-template-rows: 56px minmax(0, 1fr) 52px; grid-template-columns: minmax(0, 1fr); height: 100dvh; }
 body.wide .app { grid-template-columns: minmax(0, 1fr) clamp(330px, 28vw, 400px); }
 body.wide .bar, body.wide .foot { grid-column: 1; }
 .bar { display: flex; align-items: center; gap: 6px; padding: 0 14px; position: relative; z-index: 5; }
@@ -366,6 +366,9 @@ body.wide .pop { right: calc(clamp(330px, 28vw, 400px) + 14px); }
 @media (max-width: 640px) {
   .turn { display: none; }
   .bar .title span { display: none; }
+  .bar { gap: 2px; padding: 0 6px; }
+  .bar .title b { font-size: 19px; }
+  .ibtn { min-width: 34px; padding: 0 6px; }
   .bar .ibtn .lbltxt { display: none; }
   .foot { padding: 0 14px; }
   .foot .chap { display: none; }
