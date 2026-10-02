@@ -205,6 +205,16 @@ body.bi .lng.en, body.show-en .lng.en { background: var(--accent); color: #fff; 
 .w { border-radius: 3px; cursor: pointer; transition: background-color .15s, box-shadow .15s, color .15s; }
 @media (hover: hover) { .w:hover { background: var(--hover); } }
 .w.sel { background: var(--sel); box-shadow: 0 0 0 2px var(--sel); color: var(--sel-ink); }
+.w.sel2 { background: var(--sel); box-shadow: 0 0 0 2px var(--sel); color: var(--sel-ink); opacity: .75; }
+.sepcard { margin: 14px 0 4px; padding: 14px 16px; border-radius: 14px; background: var(--sel); color: var(--sel-ink); }
+.sepcard .t1 { font: 600 10.5px var(--ui); letter-spacing: .16em; text-transform: uppercase; display: flex; justify-content: space-between; gap: 8px; opacity: .85; }
+.sepcard .t1 .glink { color: inherit; letter-spacing: 0; text-transform: none; }
+.sepcard .sw { font: 500 26px/1.2 var(--serif); margin-top: 6px; }
+.sepcard .sw span { font: italic 16px var(--serif); opacity: .7; }
+.sepcard .sw a { color: inherit; text-decoration: none; border-bottom: 2px solid currentColor; cursor: pointer; }
+.sepcard .sm { font: 18px/1.4 var(--serif); margin-top: 4px; }
+.sepcard .sm small { font: 11.5px var(--ui); opacity: .7; }
+.sepcard .sx { font-size: 12.5px; line-height: 1.5; margin-top: 8px; opacity: .85; }
 ::highlight(sent) { background-color: var(--sent); }
 
 /* ---------- footer ---------- */
@@ -810,7 +820,10 @@ function select(i, opt = {}) {
     curSentence = sentenceAround(i);
     if (window.CSS && CSS.highlights && window.Highlight) CSS.highlights.set('sent', new Highlight(curSentence.range));
   }
-  showWord(el.textContent);
+  document.querySelectorAll('.w.sel2').forEach(x => x.classList.remove('sel2'));
+  const sep = sepAt(i);
+  if (sep) [sep.verb, sep.part].forEach(k => { if (k >= 0 && k !== i) words[k].classList.add('sel2'); });
+  showWord(el.textContent, sep);
   openDict();
   keepVisible();
   markEN();
@@ -818,6 +831,7 @@ function select(i, opt = {}) {
 }
 function deselect() {
   if (sel >= 0 && words[sel]) words[sel].classList.remove('sel');
+  document.querySelectorAll('.w.sel2').forEach(x => x.classList.remove('sel2'));
   sel = -1; curSentence = null;
   if (window.CSS && CSS.highlights) CSS.highlights.delete('sent');
   showEmpty();
@@ -1124,7 +1138,7 @@ function sentenceGrammar() {
         const vl = G.info(v.w).lemma, combo = lw + vl;
         if (!G.lemmaIs(v.i, AUX_SEIN) && !G.lemmaIs(v.i, AUX_HABEN) && !G.lemmaIs(v.i, AUX_WERDEN)) {
           role.set(last.k, 'gv2');
-          add(`<b>Separable verb</b>: <span class="gq">${esc(v.w)} … ${esc(last.w)}</span> belong together = <b>${esc(combo)}</b>. In a main clause the front part (<i>${esc(lw)}</i>) jumps to the end. ${''}`, 'trennbar');
+          add(`<b>Separable verb</b>: <span class="gq">${esc(v.w)} … ${esc(last.w)}</span> belong together = <a class="glink" style="font-size:inherit" data-look="${esc(combo)}">${esc(combo)}</a>. In a main clause the front part (<i>${esc(lw)}</i>) jumps to the end. ${''}`, 'trennbar');
         }
       }
     }
@@ -1187,11 +1201,72 @@ function toggleGram() {
   if (box) { box.innerHTML = settings.gram ? sentenceGrammar() : ''; if (settings.gram) { box.firstElementChild?.classList.add('swap'); box.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } }
   if (b) b.classList.toggle('on', settings.gram);
 }
-async function showWord(word) {
+/* ---------------- separable verbs ----------------
+   "Er stand um sechs Uhr auf" → aufstehen; also joined forms: aufstand, aufgestanden, aufzustehen. */
+const PMEAN = { an: 'on, at', auf: 'up, open', aus: 'out', ab: 'off, away', ein: 'in', mit: 'along, with', vor: 'forward, before', zu: 'shut, to', zurück: 'back',
+  weg: 'away', hin: 'there, towards', her: 'here, this way', nach: 'after', los: 'off, loose', fort: 'away', heraus: 'out', hinaus: 'out', herein: 'in', hinein: 'in',
+  herauf: 'up', hinauf: 'up', herunter: 'down', hinunter: 'down', vorbei: 'past', weiter: 'on, further', fest: 'firmly', nieder: 'down', um: 'around, over',
+  zusammen: 'together', entgegen: 'towards', wieder: 'again, back', durch: 'through', hervor: 'out, forth', herum: 'around', davon: 'away', hoch: 'up' };
+const SEP_P = [...new Set([...G.PARTICLES, ...Object.keys(PMEAN)])].sort((x, y) => y.length - x.length);
+const isVerbEntry = w => { const r = entry(w); return !!(r && (r.e || []).some(([pos]) => pos === 'Verb')); };
+function sepAt(i) {
+  if (!curSentence) return null;
+  const w = words[i].textContent, low = w.toLowerCase();
+  // 1) joined: aufstand / aufgestanden / aufzustehen (but not if the dictionary already knows this verb form)
+  if (w === low && !isVerbEntry(low)) {
+    for (const p of SEP_P) {
+      if (!low.startsWith(p) || low.length - p.length < 3) continue;
+      let rest = low.slice(p.length);
+      if (rest.startsWith('zu') && isVerbEntry(rest.slice(2))) rest = rest.slice(2);
+      if (!isVerbEntry(rest)) continue;
+      const lem = G.info(rest).lemma.toLowerCase();
+      if (!/(en|ern|eln)$/.test(lem) || !isVerbEntry(p + lem)) continue;
+      return { combo: p + lem, p, lem, verb: i, part: -1, joined: true };
+    }
+  }
+  // 2) split: the finite verb … the particle at the end of the same clause
+  const { a, b } = curSentence;
+  const cut = k => /[,;:–—»«„“"!?.()]/.test(gapAfter(k));
+  let s = i, e = i;
+  while (s > a && !cut(s - 1) && !G.COORD.has(words[s - 1].textContent.toLowerCase())) s--;
+  while (e < b && !cut(e) && !G.COORD.has(words[e + 1].textContent.toLowerCase())) e++;
+  if (s === e) return null;
+  const last = words[e].textContent.toLowerCase();
+  if (!SEP_P.includes(last)) return null;
+  for (let k = s; k < e; k++) {
+    const inf = G.info(words[k].textContent);
+    if (!G.isFinite(inf)) continue;
+    if (i !== k && i !== e) return null;                      // only when you tap the verb or the particle
+    const lem = (inf.lemma || '').toLowerCase();
+    const combo = last + lem, known = isVerbEntry(combo);
+    if (!known && (['sein', 'haben', 'werden'].includes(lem) || G.MODAL.has(lem))) return null;
+    // words that are often plain adverbs ("schrie wieder" = shouted again) only count when the combined verb really exists
+    if (!known && ['wieder', 'weiter', 'hoch', 'durch', 'nach', 'fest', 'zusammen', 'entgegen', 'her', 'hin', 'mit', 'vor', 'um', 'davon', 'herum'].includes(last)) return null;
+    return { combo, p: last, lem, verb: k, part: e, known };
+  }
+  return null;
+}
+function sepCard(sep) {
+  const se = entry(sep.combo);
+  const verbDefs = se ? (((se.e || []).find(([pos]) => pos === 'Verb') || se.e[0] || [])[1] || []).filter(d => !FORM.test(d)) : [];
+  const parts = `${PMEAN[sep.p] || sep.p} + ${G.meaning(sep.lem)}`;
+  const meaning = (se && (verbDefs.slice(0, 3).map(d => d.replace(/\s*\([^)]*\)/g, '')).join('; ') || shortMeaning(se))) || parts;
+  const how = sep.joined
+    ? `<i>${esc(words[sep.verb].textContent)}</i> = <b>${esc(sep.p)}</b> + ${esc(sep.lem)} (in side clauses and in participles the parts stay together)`
+    : `<i>${esc(words[sep.verb].textContent)} … ${esc(words[sep.part].textContent)}</i> belong together. In a main clause the front part <b>${esc(sep.p)}</b> jumps to the end.`;
+  return { meaning, html: `<div class="sepcard">
+    <div class="t1">Trennbares Verb <a class="glink" href="grammar.html#trennbar" target="_blank">Was ist das? →</a></div>
+    <div class="sw"><span>Hier:</span> <a data-look="${esc(sep.combo)}">${esc(sep.combo)}</a></div>
+    <div class="sm">${meaning === parts ? '≈ ' : ''}${esc(meaning)}${meaning === parts ? ' <small>(nicht im Wörterbuch – aus den Teilen erklärt)</small>' : ''}</div>
+    <div class="sx">${how}</div></div>` };
+}
+
+async function showWord(word, sep) {
   const my = ++lookToken;
-  current = { word, meaning: '' };
+  const saveKey = sep ? sep.combo : word;
+  current = { word: saveKey, meaning: '' };
   const acts = () => `<div class="acts">
-      <button class="pill ${isSaved(word) ? 'on' : ''}" data-act="save" id="saveBtn">${icon(IC.star)} ${isSaved(word) ? 'Gemerkt' : 'Merken'} <kbd>M</kbd></button>
+      <button class="pill ${isSaved(saveKey) ? 'on' : ''}" data-act="save" id="saveBtn">${icon(IC.star)} ${isSaved(saveKey) ? 'Gemerkt' : 'Merken'}${sep ? ': ' + esc(sep.combo) : ''} <kbd>M</kbd></button>
       <button class="pill" data-act="speak">${icon(IC.speak)} Anhören <kbd>A</kbd></button></div>`;
   const local = lookupLocal(word);
   if (local === undefined) {
@@ -1237,7 +1312,9 @@ async function showWord(word) {
   }
   const gw = grammarWord(word);
   const gram = gw.length ? `<div class="sect"><div class="lbl">Grammatik</div><ul class="gnotes gword">${gw.map(t => `<li>${t}</li>`).join('')}</ul></div>` : '';
-  setPanel(`<div>${head(word, sub)}${acts()}${gram}${body}${sentenceBlock()}</div>`);
+  let sepHtml = '';
+  if (sep) { const sc = sepCard(sep); sepHtml = sc.html; current.meaning = sc.meaning; }
+  setPanel(`<div>${head(word, sub)}${sepHtml}${acts()}${gram}${sep ? `<div class="sect"><div class="lbl">Nur „${esc(word)}“ allein</div></div>` : ''}${body}${sentenceBlock()}</div>`);
   if (wantMt) {
     mt(word).then(t => {
       if (my !== lookToken || !t || t.err || t.toLowerCase() === word.toLowerCase()) return;
